@@ -92,8 +92,43 @@
 </button>
 </div>
 </div>
-</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-charcoal/90 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.65)]" data-active-classes="text-primary border-t border-primary"><div class="h-20 px-space-xs flex items-center justify-around"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 px-1 transition-all text-primary border-t border-primary" data-path="dashboard" href="./dashboard.html"><span class="material-symbols-outlined text-[24px]">dashboard</span><span class="font-label-sm text-label-sm mt-1 tracking-tight">Painel</span></a><a class="flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 px-1 text-on-surface-variant hover:text-primary transition-all" data-path="receitas-&amp;-custos" href="./receitas.html"><span class="material-symbols-outlined text-[24px]">calculate</span><span class="font-label-sm text-label-sm mt-1 tracking-tight">Receitas</span></a><a class="flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 px-1 text-on-surface-variant hover:text-primary transition-all" data-path="estoque-&amp;-insumos" href="./estoque.html"><span class="material-symbols-outlined text-[24px]">inventory_2</span><span class="font-label-sm text-label-sm mt-1 tracking-tight">Estoque</span></a><a class="flex flex-col items-center justify-center min-w-[64px] min-h-[44px] py-1 px-1 text-on-surface-variant hover:text-primary transition-all" data-path="produtos-finais" href="./catalogo.html"><span class="material-symbols-outlined text-[24px]">liquor</span><span class="font-label-sm text-label-sm mt-1 tracking-tight">Catálogo</span></a></div></nav>
+</div></main><!-- Barra de Navegação Inferior (Mobile Tabs) -->
+<nav class="fixed bottom-0 left-0 right-0 bg-[#131312]/95 backdrop-blur-md border-t border-[#2d2d2a] z-50">
+  <div class="max-w-md mx-auto grid grid-cols-4 text-center py-2 text-[10px] text-zinc-400">
+    <!-- Painel -->
+    <a href="./dashboard.html" class="flex flex-col items-center gap-1 text-[#d8ac43] font-semibold">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+      </svg>
+      <span>Painel</span>
+    </a>
 
+    <!-- Receitas -->
+    <a href="./receitas.html" class="flex flex-col items-center gap-1 hover:text-[#d8ac43] transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+      </svg>
+      <span>Receitas</span>
+    </a>
+
+    <!-- Estoque -->
+    <a href="./estoque.html" class="flex flex-col items-center gap-1 hover:text-[#d8ac43] transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+      </svg>
+      <span>Estoque</span>
+    </a>
+
+    <!-- Catálogo / Compras -->
+    <a href="./compras.html" class="flex flex-col items-center gap-1 hover:text-[#d8ac43] transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4" />
+      </svg>
+      <span>Catálogo</span>
+    </a>
+  </div>
+</nav>
 
 
 
