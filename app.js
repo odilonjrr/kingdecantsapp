@@ -1,4 +1,4 @@
-unction obterUsuarioAtivo() {
+function obterUsuarioAtivo() {
   return localStorage.getItem('king_usuario_ativo') || 'Odilon';
 }
 
