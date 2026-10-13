@@ -4,47 +4,34 @@
       min-height: max(884px, 100dvh);
     }
   </style>
-  </head><body data-sem-menu class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Voltar" class="w-11 h-11 flex items-center justify-center rounded-xl bg-surface-container-low text-on-surface hover:text-primary transition-colors shrink-0" onclick="voltarOu('./receitas.html')"><span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span></button><img alt="King Decantes Logo" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1XFrwGGvl4pQI7I-3cc6vz0-bFTeqohPznYECMVKif-aZm1kBC6dnTKtg9cSDQHrthCX1IOPSBSOYLYin0CNCtNg20eZQmqj7cI6UYpMRVGRtB_7sOahiZigs4LbSdJJ4KN9hP86ryWkJ0zstDCl3CRT3X8hRa03seu4S7JbAiEZqnEZZW-cWLQb5D3ipA6cMSEGUDXkcyOiwJgV01rYmN3kUPMi3dX0tG_bbqOnNqb3G2prqXNbVHVZls" style="height: 38px;"><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-on-surface font-semibold truncate leading-none text-[16px]">Nova Formulação</h1></div></div><div class="flex items-center shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"><div class="flex flex-col w-full pb-10">
+  </head><body data-sem-menu class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Voltar" class="w-11 h-11 flex items-center justify-center rounded-xl bg-surface-container-low text-on-surface hover:text-primary transition-colors shrink-0" onclick="voltarOu('./receitas.html')"><span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span></button><img alt="King Decantes Logo" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1XFrwGGvl4pQI7I-3cc6vz0-bFTeqohPznYECMVKif-aZm1kBC6dnTKtg9cSDQHrthCX1IOPSBSOYLYin0CNCtNg20eZQmqj7cI6UYpMRVGRtB_7sOahiZigs4LbSdJJ4KN9hP86ryWkJ0zstDCl3CRT3X8hRa03seu4S7JbAiEZqnEZZW-cWLQb5D3ipA6cMSEGUDXkcyOiwJgV01rYmN3kUPMi3dX0tG_bbqOnNqb3G2prqXNbVHVZls" style="height: 38px;"><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-on-surface font-semibold truncate leading-none text-[16px]">Nova receita</h1></div></div><div class="flex items-center shrink-0"><a href="./index.html" aria-label="Perfil" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"><div class="flex flex-col w-full pb-10">
 <!-- Top Bar Modal Actions -->
 <div class="flex items-center justify-between px-margin py-space-sm bg-surface-container-low shadow-sm">
 <button data-href="./receitas.html" class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface font-label-md text-label-md uppercase tracking-wider transition-colors flex items-center gap-1" type="button">
 <span class="material-symbols-outlined text-[18px]">close</span>
       Cancelar
     </button>
-<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/40 text-secondary">
-<span class="material-symbols-outlined text-[14px]">science</span>
-<span class="font-label-sm text-label-sm uppercase tracking-widest">Atelier King</span>
-</div>
 <button onclick="salvarFicha(this)" class="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold tracking-wider uppercase transition-all active:scale-95 shadow-md flex items-center gap-1" type="button">
 <span class="material-symbols-outlined text-[16px]">save</span>
-      Salvar Ficha
+      Salvar
     </button>
 </div>
 <div class="flex flex-col gap-space-md px-margin mt-space-md">
-<!-- Hero Editorial Visual Mini-Banner -->
-<div class="relative w-full h-32 rounded-xl overflow-hidden bg-surface-container-highest shadow-md flex items-end p-space-md" data-alt="Close up dark luxury perfume laboratory setting, amber glass decant vials with gold atomizer nozzles, pipette measuring fragrant oil droplets on obsidian stone background, warm candlelight and golden reflections, dramatic chiaroscuro atmosphere" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQIKetyNrSL5glFqIwh70Ui8eiSRcGlyurumCy6ffEMQo8IrO-tUI3KlCzczM451TvGFTMUeSo9T8Us-6nNfX5MTO5difCH9g5R0QE9AT8-B8O2lm9LCn-3T--9d7I5HpvGTmPEHBuRouNt4cFs7xjy_2h56rR_exzAzAT6pLvlHaw4hRt66zSW2a8PFTXhU9yPIgF42G-WpCSFIrqYcpmEeN2TVgs_Ae69NaVrc0yt2HpdriVuXz5fw')">
-<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent"></div>
-<div class="relative z-10 flex flex-col">
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary mb-0.5">Formulação &amp; Precisão</span>
-<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Nova Ficha Técnica</h2>
-</div>
-</div>
 <!-- 1. Dados Básicos do Produto -->
 <section class="flex flex-col gap-space-sm p-space-md rounded-xl bg-surface-container-low shadow-sm">
 <div class="flex items-center gap-2 mb-1">
 <span class="material-symbols-outlined text-primary text-[20px]">inventory_2</span>
-<h3 class="font-title-md text-title-md text-on-surface">Dados do Produto</h3>
+<h3 class="font-title-md text-title-md text-on-surface">Produto</h3>
 </div>
 <div class="flex flex-col gap-1.5">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant" for="prod-name">Nome do Produto</label>
+<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant" for="prod-name">Nome</label>
 <div class="relative flex items-center">
-<input class="w-full bg-surface-container px-3.5 py-2.5 rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-high transition-colors" id="prod-name" placeholder="Ex: Decante Bleu de Chanel 5ml, Vela Vanilla..." type="text" value="">
-<span class="material-symbols-outlined absolute right-3 text-outline text-[18px]">edit</span>
+<input class="w-full bg-surface-container px-3.5 py-2.5 rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-high transition-colors" id="prod-name" placeholder="Ex: Decante Bleu 5ml" type="text" value="">
 </div>
 </div>
 <!-- Categories Pills -->
 <div class="flex flex-col gap-1.5 mt-2">
-<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Categoria Artesanal</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Categoria</span>
 <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
 <button class="category-chip shrink-0 px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md uppercase transition-all shadow-sm" type="button">
             Decante de Perfume
@@ -69,14 +56,14 @@
 <!-- Rendimento / Lote -->
 <div class="grid grid-cols-2 gap-space-sm mt-2">
 <div class="flex flex-col gap-1">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Rendimento Base</label>
+<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Rendimento</label>
 <div class="flex items-center bg-surface-container rounded-lg px-3 py-2">
 <input class="w-full bg-transparent font-title-md text-title-md text-on-surface focus:outline-none" id="batch-yield" min="1" type="number" value="" placeholder="1">
 <span class="font-label-sm text-label-sm text-on-surface-variant uppercase ml-1">unidade</span>
 </div>
 </div>
 <div class="flex flex-col gap-1">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Tempo Fracionamento</label>
+<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Tempo</label>
 <div class="flex items-center bg-surface-container rounded-lg px-3 py-2">
 <input class="w-full bg-transparent font-title-md text-title-md text-on-surface focus:outline-none" type="text" value="" placeholder="0 min">
 <span class="material-symbols-outlined text-outline text-[18px]">timer</span>
@@ -89,27 +76,25 @@
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary text-[20px]">view_in_ar</span>
-<h3 class="font-title-md text-title-md text-on-surface">Insumos &amp; Matérias-Primas</h3>
+<h3 class="font-title-md text-title-md text-on-surface">Insumos</h3>
 </div>
-<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">0 vinculados</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant" id="qtd-insumos">0</span>
 </div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Custo proporcional baixado direto do inventário mestre.</p>
 <!-- Lista de Itens Dinâmicos -->
-<div class="flex flex-col gap-2.5 mt-1" id="ingredients-container"><div class="flex flex-col items-center justify-center p-6 rounded-lg bg-surface-container/50 border border-dashed border-outline/30 text-center gap-2"><span class="material-symbols-outlined text-outline text-[32px]">format_list_bulleted_add</span><p class="font-title-md text-body-md text-on-surface font-medium">Nenhum insumo vinculado ainda</p><p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs">Adicione essências, frascos ou itens de embalagem para calcular o custo exato do lote.</p></div></div>
-<!-- Add more ingredients CTA -->
-<button class="w-full mt-2 py-2.5 px-3 rounded-lg bg-surface-container-high hover:bg-surface-bright text-primary font-label-md text-label-md font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors active:scale-98" type="button">
-<span class="material-symbols-outlined text-[18px]">add_circle</span>
-        Adicionar Mais Insumos do Estoque
-      </button>
+<div class="flex flex-col gap-2.5 mt-1" id="ingredients-container"><p class="font-body-sm text-body-sm text-on-surface-variant text-center py-2" id="insumos-vazio">Nenhum insumo adicionado.</p></div>
+<div class="grid grid-cols-[1fr_76px_44px] gap-2 mt-1">
+<select id="insumo-select" class="w-full min-w-0 bg-surface-container px-2.5 py-2.5 rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none"><option value="">Carregando estoque...</option></select>
+<input id="insumo-qtd" type="number" step="any" min="0" placeholder="Qtd" class="w-full bg-surface-container px-2.5 py-2.5 rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none">
+<button type="button" onclick="adicionarInsumo()" aria-label="Adicionar insumo" class="rounded-lg bg-primary text-on-primary flex items-center justify-center active:scale-95 transition-transform"><span class="material-symbols-outlined text-[22px]">add</span></button>
+</div>
 </section>
 <!-- 3. Custos Adicionais & Mão de Obra -->
 <section class="flex flex-col gap-space-sm p-space-md rounded-xl bg-surface-container-low shadow-sm">
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary text-[20px]">precision_manufacturing</span>
-<h3 class="font-title-md text-title-md text-on-surface">Custos Adicionais &amp; Operação</h3>
+<h3 class="font-title-md text-title-md text-on-surface">Outros custos</h3>
 </div>
-<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Opcional</span>
 </div>
 <div class="grid grid-cols-2 gap-space-sm mt-1">
 <div class="flex flex-col gap-1.5 p-3 rounded-lg bg-surface-container">
@@ -121,18 +106,16 @@
 <span class="font-body-md text-body-md text-outline">R$</span>
 <input class="additional-cost-input w-full bg-transparent font-title-md text-title-md text-on-surface font-semibold focus:outline-none" id="labor-cost" step="0.5" type="number" value="" placeholder="0,00">
 </div>
-<span class="font-label-sm text-label-sm text-outline">Tempo/produção</span>
 </div>
 <div class="flex flex-col gap-1.5 p-3 rounded-lg bg-surface-container">
 <div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Logística / Caixa</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Embalagem</span>
 <span class="material-symbols-outlined text-[16px] text-outline">local_shipping</span>
 </div>
 <div class="flex items-center gap-1">
 <span class="font-body-md text-body-md text-outline">R$</span>
 <input class="additional-cost-input w-full bg-transparent font-title-md text-title-md text-on-surface font-semibold focus:outline-none" id="packaging-cost" step="0.5" type="number" value="" placeholder="0,00">
 </div>
-<span class="font-label-sm text-label-sm text-outline">Envio acolchoado</span>
 </div>
 </div>
 </section>
@@ -143,27 +126,25 @@
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-primary text-[22px]">monetization_on</span>
-<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Precificação Inteligente</h3>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Preço</h3>
 </div>
-<span class="px-2.5 py-0.5 rounded-full bg-cash-positive/20 text-cash-positive font-label-sm text-label-sm font-semibold">Aguardando Insumos</span>
 </div>
 <!-- Métricas Resumo -->
 <div class="grid grid-cols-2 gap-space-sm p-3 rounded-lg bg-surface-container-low">
 <div class="flex flex-col">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Custo Unitário Total</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Custo total</span>
 <span class="font-numeric-metric text-numeric-metric text-on-surface font-bold mt-0.5" id="total-cost-display">R$ 0,00</span>
-<span class="font-label-sm text-label-sm text-outline mt-0.5">Insumos + Mão de Obra</span>
 </div>
 <div class="flex flex-col items-end">
 <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Preço Sugerido</span>
 <span class="font-numeric-metric text-numeric-metric text-primary font-bold mt-0.5" id="suggested-price-display">R$ 0,00</span>
-<span class="font-label-sm text-label-sm text-cash-positive font-semibold mt-0.5" id="profit-badge-text">+R$ 0,00 lucro líquido</span>
+<span class="font-label-sm text-label-sm text-cash-positive font-semibold mt-0.5" id="profit-badge-text">+R$ 0,00 de lucro</span>
 </div>
 </div>
 <!-- Slider & Segmentos de Lucro -->
 <div class="flex flex-col gap-2">
 <div class="flex items-center justify-between">
-<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant" for="markup-slider">Multiplicador de Markup / Lucro Desejado</label>
+<label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant" for="markup-slider">Markup</label>
 <span class="font-title-md text-title-md text-primary font-bold" id="markup-label">144% (2.44x)</span>
 </div>
 <input class="w-full accent-primary h-2 bg-surface-container-highest rounded-lg cursor-pointer" id="markup-slider" max="300" min="50" step="1" type="range" value="144">
@@ -183,12 +164,12 @@
 </div>
 </div>
 <!-- Diagnostic Viability Alert Card -->
-<div class="flex items-center gap-3 p-3 rounded-lg bg-cash-positive/10 text-on-surface" id="viability-banner"><span class="material-symbols-outlined text-outline text-[24px] shrink-0">info</span><div class="flex flex-col min-w-0"><span class="font-title-md text-body-md font-semibold text-on-surface" id="viability-title">Margem de Atenção</span><span class="font-body-sm text-body-sm text-on-surface-variant truncate" id="viability-desc">Margem baixa (0.0%). Considere reajuste de insumos.</span></div></div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-cash-positive/10 text-on-surface" id="viability-banner"><span class="material-symbols-outlined text-outline text-[24px] shrink-0">info</span><div class="flex flex-col min-w-0"><span class="font-title-md text-body-md font-semibold text-on-surface" id="viability-title">Margem baixa</span><span class="font-body-sm text-body-sm text-on-surface-variant truncate" id="viability-desc">0.0% sobre o preço.</span></div></div>
 <!-- Breakdown Bars (SVG lightweight chart) -->
 <div class="flex flex-col gap-1.5">
 <div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
-<span class="">Composição do Preço Final</span>
-<span id="composition-ratio" class="">NaN% Custo • NaN% Lucro</span>
+<span class="">Custo × lucro</span>
+<span id="composition-ratio" class="">0% Custo • 0% Lucro</span>
 </div>
 <div class="w-full h-2.5 rounded-full bg-surface-container-highest overflow-hidden flex">
 <div class="bg-outline h-full transition-all duration-300" id="cost-bar-fill" style="width: 0%;"></div>
@@ -201,18 +182,16 @@
 <label class="flex items-start gap-3 cursor-pointer">
 <input checked="" class="w-5 h-5 mt-0.5 rounded accent-primary cursor-pointer shrink-0" type="checkbox">
 <div class="flex flex-col">
-<span class="font-title-md text-body-lg text-on-surface font-semibold">Baixa Automática no Estoque</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Deduzir mililitros do frasco matriz e unidades de frascos/caixas assim que uma venda ou lote for concluído.</p>
+<span class="font-title-md text-body-lg text-on-surface font-semibold">Baixa automática no estoque</span>
 </div>
 </label>
 </section>
 <!-- 6. Botão de Ação Principal -->
 <div class="flex flex-col gap-2 pt-2">
 <button onclick="salvarFicha(this)" class="w-full py-4 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-semibold tracking-wide uppercase transition-all shadow-xl active:scale-98 flex items-center justify-center gap-2" type="button">
-<span class="material-symbols-outlined text-[24px]">verified_user</span>
-        Concluir e Salvar Receita
+<span class="material-symbols-outlined text-[24px]">check</span>
+        Salvar receita
       </button>
-<span class="font-label-sm text-label-sm text-center text-outline">Ficha sincronizada instantaneamente com catálogo e PDV</span>
 </div>
 </div>
 </div>
@@ -260,24 +239,24 @@
       markupLabel.textContent = `${markupPercent}% (${multiplier.toFixed(2)}x)`;
       totalCostDisplay.textContent = 'R$ ' + totalCost.toFixed(2).replace('.', ',');
       suggestedPriceDisplay.textContent = 'R$ ' + suggestedPrice.toFixed(2).replace('.', ',');
-      profitBadgeText.textContent = `+R$ ${netProfit.toFixed(2).replace('.', ',')} lucro líquido`;
+      profitBadgeText.textContent = `+R$ ${netProfit.toFixed(2).replace('.', ',')} de lucro`;
 
-      const costPercentage = Math.min(Math.max((totalCost / suggestedPrice) * 100, 5), 95);
-      const profitPercentage = 100 - costPercentage;
+      const costPercentage = suggestedPrice > 0 ? Math.min(Math.max((totalCost / suggestedPrice) * 100, 5), 95) : 0;
+      const profitPercentage = suggestedPrice > 0 ? 100 - costPercentage : 0;
 
       costBarFill.style.width = costPercentage + '%';
       profitBarFill.style.width = profitPercentage + '%';
       compositionRatio.textContent = `${costPercentage.toFixed(1)}% Custo • ${profitPercentage.toFixed(1)}% Lucro`;
 
       if (margin >= 50) {
-        viabilityTitle.textContent = 'Excelente Rentabilidade';
-        viabilityDesc.textContent = `Margem bruta real de ${margin.toFixed(1)}% sobre preço final.`;
+        viabilityTitle.textContent = 'Ótima margem';
+        viabilityDesc.textContent = `${margin.toFixed(1)}% sobre o preço.`;
       } else if (margin >= 30) {
-        viabilityTitle.textContent = 'Rentabilidade Saudável';
-        viabilityDesc.textContent = `Margem padrão de mercado (${margin.toFixed(1)}%).`;
+        viabilityTitle.textContent = 'Margem boa';
+        viabilityDesc.textContent = `${margin.toFixed(1)}% sobre o preço.`;
       } else {
-        viabilityTitle.textContent = 'Margem de Atenção';
-        viabilityDesc.textContent = `Margem baixa (${margin.toFixed(1)}%). Considere reajuste de insumos.`;
+        viabilityTitle.textContent = 'Margem baixa';
+        viabilityDesc.textContent = `${margin.toFixed(1)}% sobre o preço.`;
       }
     }
 
@@ -373,6 +352,60 @@
       btn.innerHTML = rotulo;
     }
   }
+</script>
+<script>
+  // Insumos do estoque: cada linha guarda o custo por unidade (ml, un ou g)
+  // e o cálculo de preço já existente soma quantidade × custo automaticamente.
+  let insumosEstoque = [];
+
+  function recalcular() {
+    document.getElementById('labor-cost').dispatchEvent(new Event('input'));
+  }
+
+  function atualizarContagemInsumos() {
+    const n = document.querySelectorAll('#ingredients-container .ingredient-row').length;
+    document.getElementById('qtd-insumos').textContent = n;
+    document.getElementById('insumos-vazio').style.display = n ? 'none' : '';
+  }
+
+  function adicionarInsumo() {
+    const select = document.getElementById('insumo-select');
+    const campoQtd = document.getElementById('insumo-qtd');
+    const insumo = insumosEstoque.find(i => String(i.id) === select.value);
+    const qtd = parseFloat(campoQtd.value);
+    if (!insumo) { alert('Escolha um insumo do estoque.'); return; }
+    if (!(qtd > 0)) { alert('Informe a quantidade usada.'); campoQtd.focus(); return; }
+
+    const linha = document.createElement('div');
+    linha.className = 'ingredient-row flex items-center gap-2 p-2.5 rounded-lg bg-surface-container';
+    linha.innerHTML = `
+      <div class="flex-1 min-w-0">
+        <div class="font-body-sm text-body-sm text-on-surface truncate">${escaparHtml(insumo.nome)}</div>
+        <div class="font-label-sm text-label-sm text-outline">${formatarReais(insumo.custo_unitario)}/${escaparHtml(insumo.unidade_medida || 'un')}</div>
+      </div>
+      <input class="qty-input w-16 bg-surface-container-high px-2 py-1.5 rounded-md font-body-sm text-body-sm text-on-surface text-right focus:outline-none" type="number" step="any" min="0">
+      <span class="subtotal-display font-label-md text-label-md text-primary w-20 text-right shrink-0">R$ 0,00</span>
+      <button type="button" aria-label="Remover" class="text-outline hover:text-error"><span class="material-symbols-outlined text-[20px]">close</span></button>`;
+    const inputQtd = linha.querySelector('.qty-input');
+    inputQtd.value = qtd;
+    inputQtd.dataset.unitCost = parseFloat(insumo.custo_unitario) || 0;
+    inputQtd.addEventListener('input', recalcular);
+    linha.querySelector('button').addEventListener('click', () => { linha.remove(); atualizarContagemInsumos(); recalcular(); });
+
+    document.getElementById('ingredients-container').appendChild(linha);
+    select.value = '';
+    campoQtd.value = '';
+    atualizarContagemInsumos();
+    recalcular();
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    const select = document.getElementById('insumo-select');
+    insumosEstoque = typeof listarInsumos === 'function' ? await listarInsumos() : [];
+    select.innerHTML = insumosEstoque.length
+      ? '<option value="">Escolha um insumo</option>' + insumosEstoque.map(i => `<option value="${escaparHtml(i.id)}">${escaparHtml(i.nome)}</option>`).join('')
+      : '<option value="">Estoque vazio</option>';
+  });
 </script>
 <script src="./nav.js"></script>
 </body></html>

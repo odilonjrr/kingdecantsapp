@@ -148,3 +148,12 @@ function calcularCustoDecante({ custoFrascoMae, volumeFrascoMaeMl, fracionamento
     custoTotal: parseFloat(custoTotal.toFixed(2))
   };
 }
+
+// 6. Utilitários de exibição (usados pelas telas)
+function formatarReais(valor) {
+  return 'R$ ' + (parseFloat(valor) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function escaparHtml(texto) {
+  return String(texto == null ? '' : texto).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}

@@ -4,216 +4,73 @@
       min-height: max(884px, 100dvh);
     }
   </style>
-  </head><body class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="King Decantes Logo" class="w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1XFrwGGvl4pQI7I-3cc6vz0-bFTeqohPznYECMVKif-aZm1kBC6dnTKtg9cSDQHrthCX1IOPSBSOYLYin0CNCtNg20eZQmqj7cI6UYpMRVGRtB_7sOahiZigs4LbSdJJ4KN9hP86ryWkJ0zstDCl3CRT3X8hRa03seu4S7JbAiEZqnEZZW-cWLQb5D3ipA6cMSEGUDXkcyOiwJgV01rYmN3kUPMi3dX0tG_bbqOnNqb3G2prqXNbVHVZls" style="height: 38px;"><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-on-surface font-semibold truncate leading-none text-[16px]">Receitas &amp; Custos</h1></div></div><div class="flex items-center gap-space-xs shrink-0"><button data-href="./estoque.html" aria-label="Alertas de Estoque" class="relative w-11 h-11 flex items-center justify-center rounded-xl bg-surface-container-low text-on-surface hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-stock-warning ring-2 ring-surface"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin space-y-space-md">
-<!-- Category Filter Pills Bar -->
-<div class="relative -mx-margin px-margin overflow-x-auto no-scrollbar pt-space-xs">
-<div class="flex items-center gap-space-xs min-w-max pb-space-xs" id="categoryFilterContainer">
-<button class="category-pill active px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-primary text-on-primary shadow-sm" data-category="all" type="button">
-        Todos
-      </button>
-<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="decantes" type="button">
-        Decantes
-      </button>
-<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="velas" type="button">
-        Velas Artesanais
-      </button>
-<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="sabonetes" type="button">
-        Sabonetes
-      </button>
-<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="bodysplash" type="button">
-        Body Splash
-      </button>
-<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="perfumes" type="button">
-        Perfumes Artesanais
-      </button>
+  </head><body class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="King Decantes Logo" class="w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1XFrwGGvl4pQI7I-3cc6vz0-bFTeqohPznYECMVKif-aZm1kBC6dnTKtg9cSDQHrthCX1IOPSBSOYLYin0CNCtNg20eZQmqj7cI6UYpMRVGRtB_7sOahiZigs4LbSdJJ4KN9hP86ryWkJ0zstDCl3CRT3X8hRa03seu4S7JbAiEZqnEZZW-cWLQb5D3ipA6cMSEGUDXkcyOiwJgV01rYmN3kUPMi3dX0tG_bbqOnNqb3G2prqXNbVHVZls" style="height: 38px;"><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-on-surface font-semibold truncate leading-none text-[16px]">Receitas</h1></div></div><div class="flex items-center gap-space-xs shrink-0"><a href="./index.html" aria-label="Perfil" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pt-space-sm gap-space-md">
+<div class="relative -mx-margin px-margin overflow-x-auto no-scrollbar">
+<div class="flex items-center gap-space-xs min-w-max pb-space-xs">
+<button class="category-pill active px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-primary text-on-primary shadow-sm" data-category="" type="button">Todos</button>
+<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="decante" type="button">Decantes</button>
+<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="vela" type="button">Velas</button>
+<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="sabonete" type="button">Sabonetes</button>
+<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="body splash" type="button">Body Splash</button>
+<button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="home spray" type="button">Home Spray</button>
 </div>
 </div>
-<!-- Hero Action Card: Nova Formulação -->
-<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-surface-container via-surface-container-low to-surface-container-lowest p-space-md shadow-xl flex items-center justify-between gap-space-sm">
-<div class="flex flex-col min-w-0 pr-space-xs">
-<div class="flex items-center gap-1.5 mb-1 text-primary">
-<span class="material-symbols-outlined text-[16px]">science</span>
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary">Atelier &amp; Margem</span>
+<a href="./formulacao.html" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider font-semibold shadow-md active:scale-[0.98] transition-transform"><span class="material-symbols-outlined text-[20px]">add_circle</span>Nova receita</a>
+<div id="lista-receitas" class="flex flex-col gap-space-xs"><p class="bg-surface-container p-space-md rounded-xl text-center font-body-sm text-body-sm text-on-surface-variant">Carregando...</p></div>
 </div>
-<p class="font-headline-sm text-headline-sm text-on-surface leading-snug">Calculadora de Custos</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-1">Precifique insumos milimétricos com margem real</p>
-</div>
-<button data-href="./formulacao.html" class="shrink-0 flex items-center justify-center gap-1.5 px-4 py-3 rounded-lg bg-primary text-on-primary font-label-md text-label-md uppercase tracking-wider shadow-md hover:bg-primary-fixed-dim active:scale-95 transition-all" type="button">
-<span class="material-symbols-outlined text-[18px]">add_circle</span>
-<span class="">Nova Receita</span>
-</button>
-</div>
-<!-- Card Principal Interativo: Ficha Aberta Sauvage Elixir 10ml -->
-<div class="w-full rounded-xl bg-surface-container-low shadow-xl p-space-md flex flex-col space-y-space-md transition-all">
-<!-- Topo do Card de Ficha Ativa -->
-<div class="flex items-start justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><div class="w-14 h-14 rounded-lg bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant/30 text-outline"><span class="material-symbols-outlined text-[28px]">science</span></div><div class="flex flex-col min-w-0"><div class="flex items-center gap-1.5"><span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">Rascunho</span></div><h2 class="font-headline-sm text-headline-sm text-on-surface mt-1 truncate">Nova Formulação (Sem título)</h2><span class="font-label-sm text-label-sm text-on-surface-variant">Selecione ou crie uma nova fórmula</span></div></div><div class="flex items-center gap-1 shrink-0"><button aria-label="Exportar Ficha Técnica" class="w-9 h-9 flex items-center justify-center rounded-lg bg-surface-container text-on-surface-variant opacity-50 cursor-not-allowed" title="Nenhuma receita ativa" type="button" disabled=""><span class="material-symbols-outlined text-[20px]">ios_share</span></button></div></div>
-<!-- Tabela / Lista Detalhada de Insumos -->
-<div class="flex flex-col space-y-space-xs">
-<div class="flex items-center justify-between pb-1">
-<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Insumos &amp; Proporções</span>
-<button data-href="./formulacao.html" class="font-label-sm text-label-sm text-primary flex items-center gap-0.5 hover:underline" type="button">
-<span class="material-symbols-outlined text-[14px]">add</span> Adicionar Insumo
-        </button>
-</div>
-<div class="flex flex-col rounded-lg bg-surface-container overflow-hidden divide-y-0"><div class="p-6 flex flex-col items-center justify-center text-center gap-2 border border-dashed border-outline-variant/40 rounded-lg"><span class="material-symbols-outlined text-[32px] text-outline">playlist_add</span><p class="font-body-sm text-body-sm text-on-surface-variant">Nenhum insumo adicionado a esta fórmula.</p><button data-href="./formulacao.html" class="mt-1 font-label-sm text-label-sm text-primary flex items-center gap-1 hover:underline px-3 py-1.5 rounded-lg bg-surface-container-high" type="button"><span class="material-symbols-outlined text-[16px]">add</span> Adicionar primeiro insumo</button></div></div>
-</div>
-<!-- Seção de Custo de Produção Base -->
-<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-high">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
-<span class="font-body-md text-body-md text-on-surface font-medium">Custo Total de Produção (CPV)</span>
-</div>
-<span class="font-numeric-metric text-[18px] text-primary" id="baseCostDisplay">R$ 0,00</span>
-</div>
-<!-- Controle Interativo de Markup / Margem -->
-<div class="flex flex-col space-y-2 p-space-sm rounded-lg bg-surface-container">
-<div class="flex items-center justify-between">
-<span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Markup Aplicado</span>
-<span class="font-numeric-metric text-[16px] text-secondary" id="markupValueDisplay">156%</span>
-</div>
-<!-- Segmented Buttons de Markup Rápido -->
-<div class="grid grid-cols-4 gap-1.5 pt-1">
-<button class="markup-btn py-1.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface transition-all" data-markup="100" type="button">100%</button>
-<button class="markup-btn active py-1.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-semibold transition-all" data-markup="156" type="button">156%</button>
-<button class="markup-btn py-1.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface transition-all" data-markup="200" type="button">200%</button>
-<button class="markup-btn py-1.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface transition-all" data-markup="250" type="button">250%</button>
-</div>
-<!-- Slider Fino de Margem -->
-<div class="pt-2 px-1">
-<input class="w-full accent-primary bg-surface-container-highest h-1 rounded appearance-none cursor-pointer" id="markupSlider" max="300" min="50" step="5" type="range" value="156">
-<div class="flex justify-between text-[10px] text-on-surface-variant font-label-sm mt-1">
-<span class="">50% (Mínimo)</span>
-<span class="">Médio Luxo (150%)</span>
-<span class="">300% (Alta Margem)</span>
-</div>
-</div>
-</div>
-<!-- Resumo Financeiro da Unidade (KPI Mosaic) -->
-<div class="grid grid-cols-2 gap-space-xs">
-<div class="p-space-sm rounded-lg bg-surface-container flex flex-col justify-between">
-<div class="flex items-center justify-between text-on-surface-variant">
-<span class="font-label-sm text-label-sm uppercase tracking-wider">Venda Sugerida</span>
-<span class="material-symbols-outlined text-[16px]">sell</span>
-</div>
-<div class="mt-2">
-<span class="font-display-lg text-[26px] leading-tight text-on-surface font-semibold" id="suggestedPriceDisplay">R$ 0,00</span>
-<span class="block font-label-sm text-label-sm text-on-surface-variant mt-0.5">Ticket médio decante</span>
-</div>
-</div>
-<div class="p-space-sm rounded-lg bg-surface-container flex flex-col justify-between">
-<div class="flex items-center justify-between text-cash-positive">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-cash-positive">Lucro Líquido</span>
-<span class="material-symbols-outlined text-[16px]">trending_up</span>
-</div>
-<div class="mt-2">
-<span class="font-display-lg text-[26px] leading-tight text-cash-positive font-semibold" id="netProfitDisplay">R$ 0,00</span>
-<div class="flex items-center gap-1 mt-0.5">
-<span class="px-1.5 py-0.2 rounded bg-cash-positive/10 font-label-sm text-label-sm text-cash-positive font-semibold" id="marginPercentDisplay">0.0% margem</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Cabeçalho de Outras Formulações Salvas -->
-<div class="flex items-center justify-between pt-space-xs">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-[20px]">bookmarks</span>
-<h3 class="font-title-md text-title-md text-on-surface font-semibold">Formuladas no Atelier</h3>
-</div>
-<span class="font-label-sm text-label-sm text-on-surface-variant">0 receitas salvas</span>
-</div>
-<!-- Lista de Outras Formulações -->
-<div class="flex flex-col space-y-space-xs"><div class="rounded-xl bg-surface-container p-6 flex flex-col items-center justify-center text-center gap-2 border border-dashed border-outline-variant/30"><div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-outline mb-1"><span class="material-symbols-outlined text-[24px]">inventory_2</span></div><p class="font-body-md text-body-md text-on-surface font-medium">Nenhuma receita salva ainda</p><p class="font-body-sm text-body-sm text-on-surface-variant max-w-[280px]">Crie formulações de decantes ou itens artesanais para calcular custos e margens automaticamente.</p></div></div>
-<!-- Rodapé Utilitário de Ação Rápida -->
-<div class="pt-space-xs pb-space-sm flex items-center gap-space-xs">
-<button class="flex-1 py-3 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center gap-1.5 font-label-md text-label-md transition-colors" type="button">
-<span class="material-symbols-outlined text-[18px]">table_view</span>
-<span class="">Exportar CSV / PDF</span>
-</button>
-<button class="flex-1 py-3 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center gap-1.5 font-label-md text-label-md transition-colors" type="button">
-<span class="material-symbols-outlined text-[18px]">analytics</span>
-<span class="">Simulação de Lote</span>
-</button>
-</div>
-</div>
-<!-- Micro-Interações e Cálculo Dinâmico de Margem -->
+</main>
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabaseClient.js"></script>
+<script src="./app.js"></script>
 <script>
-  (function initRecipeCalculator() {
-    const baseCost = 48.80;
-    const markupSlider = document.getElementById('markupSlider');
-    const markupValueDisplay = document.getElementById('markupValueDisplay');
-    const suggestedPriceDisplay = document.getElementById('suggestedPriceDisplay');
-    const netProfitDisplay = document.getElementById('netProfitDisplay');
-    const marginPercentDisplay = document.getElementById('marginPercentDisplay');
-    const markupButtons = document.querySelectorAll('.markup-btn');
-    const categoryPills = document.querySelectorAll('.category-pill');
-    const productItems = document.querySelectorAll('.product-item');
+  let todasReceitas = [];
+  let filtroReceita = '';
 
-    function updateCalculations(percentage) {
-      const markupRatio = percentage / 100;
-      const suggestedPrice = baseCost * (1 + markupRatio);
-      const netProfit = suggestedPrice - baseCost;
-      const marginPercent = (netProfit / suggestedPrice) * 100;
-
-      if (markupValueDisplay) markupValueDisplay.textContent = Math.round(percentage) + '%';
-      if (suggestedPriceDisplay) suggestedPriceDisplay.textContent = 'R$ ' + suggestedPrice.toFixed(2).replace('.', ',');
-      if (netProfitDisplay) netProfitDisplay.textContent = 'R$ ' + netProfit.toFixed(2).replace('.', ',');
-      if (marginPercentDisplay) marginPercentDisplay.textContent = marginPercent.toFixed(1) + '% margem';
+  function renderizarReceitas() {
+    const lista = document.getElementById('lista-receitas');
+    const itens = todasReceitas.filter(p => !filtroReceita || (p.categoria || '').toLowerCase().includes(filtroReceita));
+    if (itens.length === 0) {
+      lista.innerHTML = '<p class="bg-surface-container p-space-md rounded-xl text-center font-body-sm text-body-sm text-on-surface-variant">Nenhuma receita aqui.</p>';
+      return;
     }
+    lista.innerHTML = itens.map(p => `
+      <div class="bg-surface-container p-space-md rounded-xl flex flex-col gap-2">
+        <div class="flex items-center justify-between gap-space-sm">
+          <span class="font-title-md text-title-md text-on-surface font-semibold truncate">${escaparHtml(p.nome)}</span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant uppercase shrink-0">${escaparHtml(p.categoria || '')}</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 font-label-sm text-label-sm">
+          <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Custo</span><span class="font-body-md text-body-md text-on-surface">${formatarReais(p.custo_total)}</span></div>
+          <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Preço</span><span class="font-body-md text-body-md text-primary font-semibold">${formatarReais(p.preco_venda_sugerido)}</span></div>
+          <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Margem</span><span class="font-body-md text-body-md text-cash-positive">${(parseFloat(p.margem_lucro_pct) || 0).toFixed(1).replace('.', ',')}%</span></div>
+        </div>
+      </div>`).join('');
+  }
 
-    if (markupSlider) {
-      markupSlider.addEventListener('input', function(e) {
-        const val = parseFloat(e.target.value);
-        markupButtons.forEach(btn => {
-          btn.classList.remove('bg-primary', 'text-on-primary', 'font-semibold');
-          btn.classList.add('bg-surface-container-low', 'text-on-surface-variant');
-        });
-        updateCalculations(val);
+  document.querySelectorAll('.category-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.category-pill').forEach(p => {
+        p.classList.remove('bg-primary', 'text-on-primary', 'active');
+        p.classList.add('bg-surface-container', 'text-on-surface-variant');
       });
-    }
-
-    markupButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
-        markupButtons.forEach(b => {
-          b.classList.remove('bg-primary', 'text-on-primary', 'font-semibold');
-          b.classList.add('bg-surface-container-low', 'text-on-surface-variant');
-        });
-        this.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
-        this.classList.add('bg-primary', 'text-on-primary', 'font-semibold');
-
-        const val = parseFloat(this.getAttribute('data-markup'));
-        if (markupSlider) markupSlider.value = val;
-        updateCalculations(val);
-      });
+      pill.classList.remove('bg-surface-container', 'text-on-surface-variant');
+      pill.classList.add('bg-primary', 'text-on-primary', 'active');
+      filtroReceita = pill.dataset.category;
+      renderizarReceitas();
     });
+  });
 
-    categoryPills.forEach(pill => {
-      pill.addEventListener('click', function() {
-        categoryPills.forEach(p => {
-          p.classList.remove('bg-primary', 'text-on-primary', 'active');
-          p.classList.add('bg-surface-container', 'text-on-surface-variant');
-        });
-        this.classList.remove('bg-surface-container', 'text-on-surface-variant');
-        this.classList.add('bg-primary', 'text-on-primary', 'active');
-
-        const cat = this.getAttribute('data-category');
-        productItems.forEach(item => {
-          if (cat === 'all' || item.getAttribute('data-type') === cat) {
-            item.style.display = 'flex';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    });
-  })();
-</script></main>
-
-
-
-
-
-
-
+  window.addEventListener('DOMContentLoaded', async () => {
+    todasReceitas = await listarProdutos();
+    renderizarReceitas();
+  });
+</script>
 <script src="./nav.js"></script>
 </body></html>
