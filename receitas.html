@@ -46,6 +46,7 @@
           <span class="font-title-md text-title-md text-on-surface font-semibold truncate">${escaparHtml(p.nome)}</span>
           <span class="font-label-sm text-label-sm text-on-surface-variant uppercase shrink-0">${escaparHtml(p.categoria || '')}</span>
         </div>
+        ${p.rendimento ? `<span class="font-label-sm text-label-sm text-on-surface-variant">Rende ${String(p.rendimento).replace('.', ',')} ${escaparHtml(p.unidade_rendimento || 'un')} • ${formatarReais(p.custo_total / p.rendimento)} por ${escaparHtml(p.unidade_rendimento || 'un')}</span>` : ''}
         <div class="grid grid-cols-3 gap-2 font-label-sm text-label-sm">
           <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Custo</span><span class="font-body-md text-body-md text-on-surface">${formatarReais(p.custo_total)}</span></div>
           <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Preço</span><span class="font-body-md text-body-md text-primary font-semibold">${formatarReais(p.preco_venda_sugerido)}</span></div>

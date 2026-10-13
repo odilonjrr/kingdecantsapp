@@ -58,8 +58,14 @@
 <div class="flex flex-col gap-1">
 <label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Rendimento</label>
 <div class="flex items-center bg-surface-container rounded-lg px-3 py-2">
-<input class="w-full bg-transparent font-title-md text-title-md text-on-surface focus:outline-none" id="batch-yield" min="1" type="number" value="" placeholder="1">
-<span class="font-label-sm text-label-sm text-on-surface-variant uppercase ml-1">unidade</span>
+<input class="w-full min-w-0 bg-transparent font-title-md text-title-md text-on-surface focus:outline-none" id="batch-yield" min="0" step="any" type="number" value="" placeholder="1">
+<select id="batch-unit" aria-label="Unidade do rendimento" class="bg-surface-container-high rounded-md px-2 py-1 ml-1 font-label-md text-label-md text-on-surface focus:outline-none">
+<option value="un">un</option>
+<option value="g">g</option>
+<option value="kg">kg</option>
+<option value="ml">ml</option>
+<option value="L">L</option>
+</select>
 </div>
 </div>
 <div class="flex flex-col gap-1">
@@ -134,6 +140,7 @@
 <div class="flex flex-col">
 <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Custo total</span>
 <span class="font-numeric-metric text-numeric-metric text-on-surface font-bold mt-0.5" id="total-cost-display">R$ 0,00</span>
+<span class="font-label-sm text-label-sm text-outline mt-0.5" id="custo-por-unidade"></span>
 </div>
 <div class="flex flex-col items-end">
 <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Preço Sugerido</span>
@@ -341,7 +348,9 @@
         categoria: chipAtivo ? chipAtivo.textContent.trim() : 'Decante',
         custo_total: custo,
         preco_venda_sugerido: preco,
-        margem_lucro_pct: parseFloat(margem.toFixed(1))
+        margem_lucro_pct: parseFloat(margem.toFixed(1)),
+        rendimento: parseFloat(document.getElementById('batch-yield').value) || null,
+        unidade_rendimento: document.getElementById('batch-unit').value
       });
       alert('Ficha salva com sucesso!');
       window.location.href = './receitas.html';
@@ -398,6 +407,18 @@
     atualizarContagemInsumos();
     recalcular();
   }
+
+  function atualizarCustoPorUnidade() {
+    const rendimento = parseFloat(document.getElementById('batch-yield').value);
+    const unidade = document.getElementById('batch-unit').value;
+    const texto = document.getElementById('total-cost-display').textContent;
+    const total = parseFloat(texto.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+    document.getElementById('custo-por-unidade').textContent =
+      rendimento > 0 && total > 0 ? `${formatarReais(total / rendimento)} por ${unidade}` : '';
+  }
+  new MutationObserver(atualizarCustoPorUnidade).observe(document.getElementById('total-cost-display'), { childList: true, characterData: true, subtree: true });
+  document.getElementById('batch-yield').addEventListener('input', atualizarCustoPorUnidade);
+  document.getElementById('batch-unit').addEventListener('change', atualizarCustoPorUnidade);
 
   window.addEventListener('DOMContentLoaded', async () => {
     const select = document.getElementById('insumo-select');
