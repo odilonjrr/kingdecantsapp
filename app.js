@@ -57,20 +57,29 @@ async function listarInsumos() {
 async function cadastrarProduto(dados) {
   try {
     const usuario = obterUsuarioAtivo();
-    const { data, error } = await supabase
-      .from('produtos')
-      .insert([
-        {
-          nome: dados.nome,
-          categoria: dados.categoria || 'Decante',
-          tamanho_ml: parseFloat(dados.tamanho_ml || 0),
-          custo_total: parseFloat(dados.custo_total || 0),
-          preco_venda_sugerido: parseFloat(dados.preco_venda_sugerido || 0),
-          margem_lucro_pct: parseFloat(dados.margem_lucro_pct || 0),
-          criado_por: usuario
-        }
-      ])
-      .select();
+    const linha = {
+      nome: dados.nome,
+      categoria: dados.categoria || 'Decante',
+      tamanho_ml: parseFloat(dados.tamanho_ml || 0),
+      custo_total: parseFloat(dados.custo_total || 0),
+      preco_venda_sugerido: parseFloat(dados.preco_venda_sugerido || 0),
+      margem_lucro_pct: parseFloat(dados.margem_lucro_pct || 0),
+      criado_por: usuario
+    };
+    if (dados.rendimento) {
+      linha.rendimento = dados.rendimento;
+      linha.unidade_rendimento = dados.unidade_rendimento || 'un';
+    }
+    let { data, error } = await supabase.from('produtos').insert([linha]).select();
+
+    // Se a tabela ainda não tiver as colunas de rendimento (PGRST204 = coluna
+    // não encontrada), salva a receita sem elas em vez de perder o cadastro.
+    if (error && error.code === 'PGRST204' && 'rendimento' in linha) {
+      console.warn('Tabela produtos sem colunas de rendimento; salvando sem elas.', error);
+      delete linha.rendimento;
+      delete linha.unidade_rendimento;
+      ({ data, error } = await supabase.from('produtos').insert([linha]).select());
+    }
 
     if (error) throw error;
     return data;
@@ -147,4 +156,13 @@ function calcularCustoDecante({ custoFrascoMae, volumeFrascoMaeMl, fracionamento
     custoMaterial: parseFloat(custoMaterial.toFixed(2)),
     custoTotal: parseFloat(custoTotal.toFixed(2))
   };
+}
+
+// 6. Utilitários de exibição (usados pelas telas)
+function formatarReais(valor) {
+  return 'R$ ' + (parseFloat(valor) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function escaparHtml(texto) {
+  return String(texto == null ? '' : texto).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
