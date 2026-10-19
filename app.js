@@ -53,6 +53,33 @@ async function listarInsumos() {
   }
 }
 
+// Editar e excluir: o .select() devolve as linhas afetadas; se vier vazio,
+// o banco não deixou (regra de permissão/RLS) e avisamos em vez de fingir sucesso.
+async function atualizarInsumo(id, dados) {
+  const { data, error } = await supabase
+    .from('insumos')
+    .update({
+      nome: dados.nome,
+      categoria: dados.categoria,
+      quantidade_estoque: parseFloat(dados.quantidade_estoque || 0),
+      unidade_medida: dados.unidade_medida || 'un',
+      custo_unitario: parseFloat(dados.custo_unitario || 0),
+      fornecedor: dados.fornecedor || ''
+    })
+    .eq('id', id)
+    .select();
+  if (error) throw error;
+  if (!data || data.length === 0) throw new Error('o banco não permitiu editar este item (verifique as permissões da tabela insumos).');
+  return data;
+}
+
+async function excluirInsumo(id) {
+  const { data, error } = await supabase.from('insumos').delete().eq('id', id).select();
+  if (error) throw error;
+  if (!data || data.length === 0) throw new Error('o banco não permitiu excluir este item (verifique as permissões da tabela insumos).');
+  return data;
+}
+
 // 3. Funções de Produtos / Fórmulas e Decantes
 async function cadastrarProduto(dados) {
   try {
