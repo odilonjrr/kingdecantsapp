@@ -53,24 +53,60 @@ async function listarInsumos() {
   }
 }
 
+// Editar e excluir: o .select() devolve as linhas afetadas; se vier vazio,
+// o banco não deixou (regra de permissão/RLS) e avisamos em vez de fingir sucesso.
+async function atualizarInsumo(id, dados) {
+  const { data, error } = await supabase
+    .from('insumos')
+    .update({
+      nome: dados.nome,
+      categoria: dados.categoria,
+      quantidade_estoque: parseFloat(dados.quantidade_estoque || 0),
+      unidade_medida: dados.unidade_medida || 'un',
+      custo_unitario: parseFloat(dados.custo_unitario || 0),
+      fornecedor: dados.fornecedor || ''
+    })
+    .eq('id', id)
+    .select();
+  if (error) throw error;
+  if (!data || data.length === 0) throw new Error('o banco não permitiu editar este item (verifique as permissões da tabela insumos).');
+  return data;
+}
+
+async function excluirInsumo(id) {
+  const { data, error } = await supabase.from('insumos').delete().eq('id', id).select();
+  if (error) throw error;
+  if (!data || data.length === 0) throw new Error('o banco não permitiu excluir este item (verifique as permissões da tabela insumos).');
+  return data;
+}
+
 // 3. Funções de Produtos / Fórmulas e Decantes
 async function cadastrarProduto(dados) {
   try {
     const usuario = obterUsuarioAtivo();
-    const { data, error } = await supabase
-      .from('produtos')
-      .insert([
-        {
-          nome: dados.nome,
-          categoria: dados.categoria || 'Decante',
-          tamanho_ml: parseFloat(dados.tamanho_ml || 0),
-          custo_total: parseFloat(dados.custo_total || 0),
-          preco_venda_sugerido: parseFloat(dados.preco_venda_sugerido || 0),
-          margem_lucro_pct: parseFloat(dados.margem_lucro_pct || 0),
-          criado_por: usuario
-        }
-      ])
-      .select();
+    const linha = {
+      nome: dados.nome,
+      categoria: dados.categoria || 'Decante',
+      tamanho_ml: parseFloat(dados.tamanho_ml || 0),
+      custo_total: parseFloat(dados.custo_total || 0),
+      preco_venda_sugerido: parseFloat(dados.preco_venda_sugerido || 0),
+      margem_lucro_pct: parseFloat(dados.margem_lucro_pct || 0),
+      criado_por: usuario
+    };
+    if (dados.rendimento) {
+      linha.rendimento = dados.rendimento;
+      linha.unidade_rendimento = dados.unidade_rendimento || 'un';
+    }
+    let { data, error } = await supabase.from('produtos').insert([linha]).select();
+
+    // Se a tabela ainda não tiver as colunas de rendimento (PGRST204 = coluna
+    // não encontrada), salva a receita sem elas em vez de perder o cadastro.
+    if (error && error.code === 'PGRST204' && 'rendimento' in linha) {
+      console.warn('Tabela produtos sem colunas de rendimento; salvando sem elas.', error);
+      delete linha.rendimento;
+      delete linha.unidade_rendimento;
+      ({ data, error } = await supabase.from('produtos').insert([linha]).select());
+    }
 
     if (error) throw error;
     return data;
@@ -147,4 +183,13 @@ function calcularCustoDecante({ custoFrascoMae, volumeFrascoMaeMl, fracionamento
     custoMaterial: parseFloat(custoMaterial.toFixed(2)),
     custoTotal: parseFloat(custoTotal.toFixed(2))
   };
+}
+
+// 6. Utilitários de exibição (usados pelas telas)
+function formatarReais(valor) {
+  return 'R$ ' + (parseFloat(valor) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function escaparHtml(texto) {
+  return String(texto == null ? '' : texto).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }

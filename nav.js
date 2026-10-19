@@ -3,14 +3,15 @@
 // Um único menu para todas as telas: os links ficam sempre
 // iguais e a aba da tela atual fica destacada.
 // Telas com <body data-sem-menu> (login, formulação) não recebem menu.
+// z-index 40: fica abaixo das janelas/modais (z-50) para não cobrir os botões delas.
 // ============================================================
 (function () {
   const ITENS_MENU = [
+    { secao: 'perfil', href: './index.html', icone: 'person', rotulo: 'Perfil' },
     { secao: 'painel', href: './dashboard.html', icone: 'dashboard', rotulo: 'Painel' },
     { secao: 'receitas', href: './receitas.html', icone: 'calculate', rotulo: 'Receitas' },
     { secao: 'estoque', href: './estoque.html', icone: 'inventory_2', rotulo: 'Estoque' },
-    { secao: 'compras', href: './compras.html', icone: 'shopping_cart', rotulo: 'Compras' },
-    { secao: 'perfil', href: './index.html', icone: 'person', rotulo: 'Perfil' }
+    { secao: 'compras', href: './compras.html', icone: 'shopping_cart', rotulo: 'Compras' }
   ];
 
   // Telas "filhas" acendem a aba da seção a que pertencem
@@ -49,7 +50,7 @@
     const nav = document.createElement('nav');
     nav.id = 'king-bottom-nav';
     nav.setAttribute('aria-label', 'Menu principal');
-    nav.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(19,19,18,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid #2d2d2a;padding-bottom:env(safe-area-inset-bottom);';
+    nav.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(19,19,18,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid #2d2d2a;padding-bottom:env(safe-area-inset-bottom);';
 
     const linha = document.createElement('div');
     linha.style.cssText = 'height:64px;display:flex;align-items:stretch;justify-content:space-around;max-width:640px;margin:0 auto;';
@@ -106,9 +107,23 @@
     }
   };
 
+  // Nas telas com cabeçalho fixo, o conteúdo começa logo abaixo dele. No celular
+  // o título vai para uma segunda linha e o cabeçalho cresce, então o espaço
+  // acompanha a altura real em vez de ficar fixo em 64px.
+  function ajustarCabecalhoFixo() {
+    const cabecalho = document.querySelector('header.fixed');
+    const principal = document.querySelector('main');
+    if (!cabecalho || !principal) return;
+    const ajustar = () => { principal.style.paddingTop = cabecalho.offsetHeight + 'px'; };
+    ajustar();
+    window.addEventListener('resize', ajustar);
+    window.addEventListener('load', ajustar);
+  }
+
   function iniciar() {
     montarMenu();
     ligarAtalhos();
+    ajustarCabecalhoFixo();
   }
 
   if (document.readyState === 'loading') {
