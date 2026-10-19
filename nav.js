@@ -107,9 +107,23 @@
     }
   };
 
+  // Nas telas com cabeçalho fixo, o conteúdo começa logo abaixo dele. No celular
+  // o título vai para uma segunda linha e o cabeçalho cresce, então o espaço
+  // acompanha a altura real em vez de ficar fixo em 64px.
+  function ajustarCabecalhoFixo() {
+    const cabecalho = document.querySelector('header.fixed');
+    const principal = document.querySelector('main');
+    if (!cabecalho || !principal) return;
+    const ajustar = () => { principal.style.paddingTop = cabecalho.offsetHeight + 'px'; };
+    ajustar();
+    window.addEventListener('resize', ajustar);
+    window.addEventListener('load', ajustar);
+  }
+
   function iniciar() {
     montarMenu();
     ligarAtalhos();
+    ajustarCabecalhoFixo();
   }
 
   if (document.readyState === 'loading') {

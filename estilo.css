@@ -1,0 +1,44 @@
+/* ============================================================
+   King Decantes - Estilos compartilhados (estilo.css)
+   Título da tela: mesma fonte, tamanho e cor em todas as telas,
+   centralizado na tela.
+   ============================================================ */
+.cabecalho-pagina {
+  position: relative;
+}
+
+.titulo-pagina {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  color: #e5e2df;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Celular: o título não cabe ao lado do logo sem sobrepor,
+   então vai para uma linha própria, centralizada, logo abaixo. */
+@media (max-width: 599px) {
+  .cabecalho-pagina {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+  .cabecalho-fixo {
+    height: auto !important;
+    padding-top: 9px;
+  }
+  .titulo-pagina {
+    position: static;
+    transform: none;
+    order: 3;
+    flex-basis: 100%;
+    text-align: center;
+    padding: 2px 0 8px;
+  }
+}
