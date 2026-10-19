@@ -336,7 +336,7 @@
           </div>
           <div class="flex items-center gap-2 shrink-0">
             <div class="text-right">
-              <div class="text-xs font-bold text-white">${formatarReais(item.custo_unitario)}/${item.unidade_medida || 'un'}</div>
+              <div class="text-xs font-bold text-white">${formatarCustoUnitario(item.custo_unitario)}/${item.unidade_medida || 'un'}</div>
               <div class="text-[10px] text-zinc-500">${escaparHtml(item.fornecedor || '')}</div>
             </div>
             <button type="button" onclick="editarInsumo('${item.id}')" aria-label="Editar" title="Editar" class="w-8 h-8 rounded-lg bg-[#181816] border border-brand-cardBorder text-zinc-300 hover:text-brand-gold hover:border-brand-gold/40 flex items-center justify-center transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.232-6.232a2.5 2.5 0 113.536 3.536L12.536 16.536 8 18l1.464-4.536z"/></svg></button>

@@ -81,39 +81,60 @@ async function excluirInsumo(id) {
 }
 
 // 3. Funções de Produtos / Fórmulas e Decantes
+// Colunas que podem não existir em bancos mais antigos: se o Supabase
+// responder que falta uma delas (PGRST204), ela é retirada e a gravação
+// é repetida, para não perder a receita.
+const COLUNAS_OPCIONAIS_PRODUTO = ['rendimento', 'unidade_rendimento', 'composicao'];
+
+// Cria (id vazio) ou atualiza (id informado) uma receita/produto.
+async function salvarProduto(dados, id) {
+  const linha = {
+    nome: dados.nome,
+    categoria: dados.categoria || 'Decante',
+    tamanho_ml: parseFloat(dados.tamanho_ml || 0),
+    custo_total: parseFloat(dados.custo_total || 0),
+    preco_venda_sugerido: parseFloat(dados.preco_venda_sugerido || 0),
+    margem_lucro_pct: parseFloat(dados.margem_lucro_pct || 0)
+  };
+  if (!id) linha.criado_por = obterUsuarioAtivo();
+  if (dados.rendimento) {
+    linha.rendimento = dados.rendimento;
+    linha.unidade_rendimento = dados.unidade_rendimento || 'un';
+  }
+  if (dados.composicao) linha.composicao = dados.composicao;
+
+  const gravar = () => id
+    ? supabase.from('produtos').update(linha).eq('id', id).select()
+    : supabase.from('produtos').insert([linha]).select();
+
+  let { data, error } = await gravar();
+  for (let tentativas = 0; error && error.code === 'PGRST204' && tentativas < COLUNAS_OPCIONAIS_PRODUTO.length; tentativas++) {
+    const faltando = (String(error.message).match(/'(\w+)' column/) || [])[1];
+    if (!COLUNAS_OPCIONAIS_PRODUTO.includes(faltando) || !(faltando in linha)) break;
+    console.warn(`Tabela produtos sem a coluna ${faltando}; salvando sem ela.`);
+    delete linha[faltando];
+    ({ data, error } = await gravar());
+  }
+
+  if (error) throw error;
+  if (id && (!data || data.length === 0)) throw new Error('o banco não permitiu editar esta receita (verifique as permissões da tabela produtos).');
+  return data;
+}
+
 async function cadastrarProduto(dados) {
   try {
-    const usuario = obterUsuarioAtivo();
-    const linha = {
-      nome: dados.nome,
-      categoria: dados.categoria || 'Decante',
-      tamanho_ml: parseFloat(dados.tamanho_ml || 0),
-      custo_total: parseFloat(dados.custo_total || 0),
-      preco_venda_sugerido: parseFloat(dados.preco_venda_sugerido || 0),
-      margem_lucro_pct: parseFloat(dados.margem_lucro_pct || 0),
-      criado_por: usuario
-    };
-    if (dados.rendimento) {
-      linha.rendimento = dados.rendimento;
-      linha.unidade_rendimento = dados.unidade_rendimento || 'un';
-    }
-    let { data, error } = await supabase.from('produtos').insert([linha]).select();
-
-    // Se a tabela ainda não tiver as colunas de rendimento (PGRST204 = coluna
-    // não encontrada), salva a receita sem elas em vez de perder o cadastro.
-    if (error && error.code === 'PGRST204' && 'rendimento' in linha) {
-      console.warn('Tabela produtos sem colunas de rendimento; salvando sem elas.', error);
-      delete linha.rendimento;
-      delete linha.unidade_rendimento;
-      ({ data, error } = await supabase.from('produtos').insert([linha]).select());
-    }
-
-    if (error) throw error;
-    return data;
+    return await salvarProduto(dados, null);
   } catch (err) {
     console.error('Erro ao cadastrar produto:', err);
     throw err;
   }
+}
+
+async function excluirProduto(id) {
+  const { data, error } = await supabase.from('produtos').delete().eq('id', id).select();
+  if (error) throw error;
+  if (!data || data.length === 0) throw new Error('o banco não permitiu excluir esta receita (verifique as permissões da tabela produtos).');
+  return data;
 }
 
 async function listarProdutos() {
@@ -188,6 +209,13 @@ function calcularCustoDecante({ custoFrascoMae, volumeFrascoMaeMl, fracionamento
 // 6. Utilitários de exibição (usados pelas telas)
 function formatarReais(valor) {
   return 'R$ ' + (parseFloat(valor) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Custo por ml/g/un: abaixo de R$ 1 mostra até 4 casas (ex.: R$ 0,0148),
+// para não arredondar centavos que fazem diferença no custo da receita.
+function formatarCustoUnitario(valor) {
+  const v = parseFloat(valor) || 0;
+  return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: v > 0 && v < 1 ? 4 : 2 });
 }
 
 function escaparHtml(texto) {
