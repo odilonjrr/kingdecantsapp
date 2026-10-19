@@ -42,17 +42,36 @@
     }
     lista.innerHTML = itens.map(p => `
       <div class="bg-surface-container p-space-md rounded-xl flex flex-col gap-2">
-        <div class="flex items-center justify-between gap-space-sm">
-          <span class="font-title-md text-title-md text-on-surface font-semibold truncate">${escaparHtml(p.nome)}</span>
-          <span class="font-label-sm text-label-sm text-on-surface-variant uppercase shrink-0">${escaparHtml(p.categoria || '')}</span>
+        <div class="flex items-start justify-between gap-space-sm">
+          <div class="min-w-0 flex-1">
+            <div class="font-title-md text-title-md text-on-surface font-semibold leading-snug break-words">${escaparHtml(p.nome)}</div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-0.5">${escaparHtml(p.categoria || '')}</div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <a href="./formulacao.html?id=${encodeURIComponent(p.id)}" aria-label="Editar" title="Editar" class="w-9 h-9 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center transition hover:text-primary"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.232-6.232a2.5 2.5 0 113.536 3.536L12.536 16.536 8 18l1.464-4.536z"/></svg></a>
+            <button type="button" onclick="confirmarExclusaoReceita('${p.id}')" aria-label="Excluir" title="Excluir" class="w-9 h-9 rounded-lg bg-surface-container-high text-on-surface-variant flex items-center justify-center transition hover:text-error"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3M4 7h16"/></svg></button>
+          </div>
         </div>
-        ${p.rendimento ? `<span class="font-label-sm text-label-sm text-on-surface-variant">Rende ${String(p.rendimento).replace('.', ',')} ${escaparHtml(p.unidade_rendimento || 'un')} • ${formatarReais(p.custo_total / p.rendimento)} por ${escaparHtml(p.unidade_rendimento || 'un')}</span>` : ''}
+        ${p.rendimento ? `<span class="font-label-sm text-label-sm text-on-surface-variant">Rende ${String(p.rendimento).replace('.', ',')} ${escaparHtml(p.unidade_rendimento || 'un')} • ${formatarCustoUnitario(p.custo_total / p.rendimento)} por ${escaparHtml(p.unidade_rendimento || 'un')}</span>` : ''}
         <div class="grid grid-cols-3 gap-2 font-label-sm text-label-sm">
           <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Custo</span><span class="font-body-md text-body-md text-on-surface">${formatarReais(p.custo_total)}</span></div>
           <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Preço</span><span class="font-body-md text-body-md text-primary font-semibold">${formatarReais(p.preco_venda_sugerido)}</span></div>
           <div class="flex flex-col"><span class="text-on-surface-variant uppercase">Margem</span><span class="font-body-md text-body-md text-cash-positive">${(parseFloat(p.margem_lucro_pct) || 0).toFixed(1).replace('.', ',')}%</span></div>
         </div>
       </div>`).join('');
+  }
+
+  async function confirmarExclusaoReceita(id) {
+    const p = todasReceitas.find(x => String(x.id) === String(id));
+    if (!p || !confirm(`Excluir a receita "${p.nome}"?`)) return;
+    try {
+      await excluirProduto(p.id);
+      todasReceitas = todasReceitas.filter(x => String(x.id) !== String(id));
+      renderizarReceitas();
+    } catch (err) {
+      console.error(err);
+      alert('Erro ao excluir: ' + err.message);
+    }
   }
 
   document.getElementById('filtros-categoria').addEventListener('click', ev => {

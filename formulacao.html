@@ -4,7 +4,7 @@
       min-height: max(884px, 100dvh);
     }
   </style>
-  <link rel="stylesheet" href="./estilo.css"></head><body data-sem-menu class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm cabecalho-pagina cabecalho-fixo"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Voltar" class="w-11 h-11 flex items-center justify-center rounded-xl bg-surface-container-low text-on-surface hover:text-primary transition-colors shrink-0" onclick="voltarOu('./receitas.html')"><span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span></button><img alt="King Decantes Logo" class="w-auto object-contain shrink-0" src="./logo.webp" style="height: 46px;"></div><h1 class="titulo-pagina">Nova receita</h1><div class="flex items-center shrink-0"><a href="./index.html" aria-label="Perfil" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"><div class="flex flex-col w-full pb-10">
+  <link rel="stylesheet" href="./estilo.css"></head><body data-sem-menu class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm cabecalho-pagina cabecalho-fixo"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Voltar" class="w-11 h-11 flex items-center justify-center rounded-xl bg-surface-container-low text-on-surface hover:text-primary transition-colors shrink-0" onclick="voltarOu('./receitas.html')"><span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span></button><img alt="King Decantes Logo" class="w-auto object-contain shrink-0" src="./logo.webp" style="height: 46px;"></div><h1 class="titulo-pagina" id="titulo-receita">Nova receita</h1><div class="flex items-center shrink-0"><a href="./index.html" aria-label="Perfil" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"><div class="flex flex-col w-full pb-10">
 <!-- Top Bar Modal Actions -->
 <div class="flex items-center justify-between px-margin py-space-sm bg-surface-container-low shadow-sm">
 <button data-href="./receitas.html" class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface font-label-md text-label-md uppercase tracking-wider transition-colors flex items-center gap-1" type="button">
@@ -155,7 +155,7 @@
 <label class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant" for="markup-slider">Markup</label>
 <span class="font-title-md text-title-md text-primary font-bold" id="markup-label">144% (2.44x)</span>
 </div>
-<input class="w-full accent-primary h-2 bg-surface-container-highest rounded-lg cursor-pointer" id="markup-slider" max="300" min="50" step="1" type="range" value="144">
+<input class="w-full accent-primary h-2 bg-surface-container-highest rounded-lg cursor-pointer" id="markup-slider" max="400" min="50" step="1" type="range" value="144">
 <div class="grid grid-cols-4 gap-1.5 mt-1">
 <button class="preset-btn py-1.5 rounded-md bg-surface-container text-on-surface font-label-sm text-label-sm uppercase hover:bg-surface-container-high transition-colors" data-markup="100" type="button">
             100%
@@ -334,19 +334,32 @@
     btn.disabled = true;
     btn.textContent = 'Salvando...';
     try {
-      if (typeof cadastrarProduto !== 'function' || !window.supabase || !window.supabase.from) {
+      if (typeof salvarProduto !== 'function' || !window.supabase || !window.supabase.from) {
         throw new Error('Conexão com o Supabase não carregou.');
       }
-      await cadastrarProduto({
+      const composicao = {
+        insumos: [...document.querySelectorAll('#ingredients-container .ingredient-row')].map(l => ({
+          id: l.dataset.insumoId,
+          nome: l.dataset.nome,
+          unidade_medida: l.dataset.unidade,
+          custo_unitario: parseFloat(l.querySelector('.qty-input').dataset.unitCost) || 0,
+          qtd: parseFloat(l.querySelector('.qty-input').value) || 0
+        })),
+        mao_de_obra: parseFloat(document.getElementById('labor-cost').value) || 0,
+        embalagem: parseFloat(document.getElementById('packaging-cost').value) || 0,
+        markup: parseFloat(document.getElementById('markup-slider').value) || 0
+      };
+      await salvarProduto({
         nome,
         categoria: chipAtivo ? chipAtivo.textContent.trim() : 'Decante',
         custo_total: custo,
         preco_venda_sugerido: preco,
         margem_lucro_pct: parseFloat(margem.toFixed(1)),
         rendimento: parseFloat(document.getElementById('batch-yield').value) || null,
-        unidade_rendimento: document.getElementById('batch-unit').value
-      });
-      alert('Ficha salva com sucesso!');
+        unidade_rendimento: document.getElementById('batch-unit').value,
+        composicao
+      }, window.receitaEditandoId || null);
+      alert(window.receitaEditandoId ? 'Receita atualizada!' : 'Ficha salva com sucesso!');
       window.location.href = './receitas.html';
     } catch (err) {
       console.error(err);
@@ -378,17 +391,26 @@
     const qtd = parseFloat(campoQtd.value);
     if (!insumo) { alert('Escolha um insumo do estoque.'); return; }
     if (!(qtd > 0)) { alert('Informe a quantidade usada.'); campoQtd.focus(); return; }
+    criarLinhaInsumo(insumo, qtd);
+    select.value = '';
+    campoQtd.value = '';
+  }
 
+  // insumo = { id, nome, custo_unitario, unidade_medida }
+  function criarLinhaInsumo(insumo, qtd) {
     const linha = document.createElement('div');
     linha.className = 'ingredient-row flex items-center gap-2 p-2.5 rounded-lg bg-surface-container';
     linha.innerHTML = `
       <div class="flex-1 min-w-0">
         <div class="font-body-sm text-body-sm text-on-surface truncate">${escaparHtml(insumo.nome)}</div>
-        <div class="font-label-sm text-label-sm text-outline">${formatarReais(insumo.custo_unitario)}/${escaparHtml(insumo.unidade_medida || 'un')}</div>
+        <div class="font-label-sm text-label-sm text-outline">${formatarCustoUnitario(insumo.custo_unitario)}/${escaparHtml(insumo.unidade_medida || 'un')}</div>
       </div>
       <input class="qty-input w-16 bg-surface-container-high px-2 py-1.5 rounded-md font-body-sm text-body-sm text-on-surface text-right focus:outline-none" type="number" step="any" min="0">
       <span class="subtotal-display font-label-md text-label-md text-primary w-20 text-right shrink-0">R$ 0,00</span>
       <button type="button" aria-label="Remover" class="text-outline hover:text-error"><span class="material-symbols-outlined text-[20px]">close</span></button>`;
+    linha.dataset.insumoId = insumo.id == null ? '' : insumo.id;
+    linha.dataset.nome = insumo.nome || '';
+    linha.dataset.unidade = insumo.unidade_medida || 'un';
     const inputQtd = linha.querySelector('.qty-input');
     inputQtd.value = qtd;
     inputQtd.dataset.unitCost = parseFloat(insumo.custo_unitario) || 0;
@@ -396,8 +418,6 @@
     linha.querySelector('button').addEventListener('click', () => { linha.remove(); atualizarContagemInsumos(); recalcular(); });
 
     document.getElementById('ingredients-container').appendChild(linha);
-    select.value = '';
-    campoQtd.value = '';
     atualizarContagemInsumos();
     recalcular();
   }
@@ -408,7 +428,7 @@
     const texto = document.getElementById('total-cost-display').textContent;
     const total = parseFloat(texto.replace(/[^\d,.-]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
     document.getElementById('custo-por-unidade').textContent =
-      rendimento > 0 && total > 0 ? `${formatarReais(total / rendimento)} por ${unidade}` : '';
+      rendimento > 0 && total > 0 ? `${formatarCustoUnitario(total / rendimento)} por ${unidade}` : '';
   }
   new MutationObserver(atualizarCustoPorUnidade).observe(document.getElementById('total-cost-display'), { childList: true, characterData: true, subtree: true });
   document.getElementById('batch-yield').addEventListener('input', atualizarCustoPorUnidade);
@@ -475,6 +495,44 @@
     lerCategoriasExtras().forEach(criarChipCategoria);
     const produtos = typeof listarProdutos === 'function' ? await listarProdutos() : [];
     produtos.map(p => (p.categoria || '').trim()).filter(Boolean).forEach(criarChipCategoria);
+  });
+</script>
+<script>
+  // Editar receita: abre com ?id= e carrega os dados salvos no formulário.
+  window.receitaEditandoId = new URLSearchParams(window.location.search).get('id');
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    if (!window.receitaEditandoId || typeof listarProdutos !== 'function') return;
+    const produtos = await listarProdutos();
+    const p = produtos.find(x => String(x.id) === String(window.receitaEditandoId));
+    if (!p) { alert('Receita não encontrada.'); window.location.href = './receitas.html'; return; }
+
+    document.title = 'King Decantes - Editar receita';
+    document.getElementById('titulo-receita').textContent = 'Editar receita';
+    document.getElementById('prod-name').value = p.nome || '';
+    if (p.categoria) selecionarCategoria(criarChipCategoria(p.categoria));
+    if (p.rendimento) document.getElementById('batch-yield').value = p.rendimento;
+    if (p.unidade_rendimento) document.getElementById('batch-unit').value = p.unidade_rendimento;
+
+    let comp = p.composicao;
+    if (typeof comp === 'string') { try { comp = JSON.parse(comp); } catch (e) { comp = null; } }
+
+    let markup;
+    if (comp && Array.isArray(comp.insumos)) {
+      comp.insumos.forEach(i => criarLinhaInsumo(i, i.qtd));
+      document.getElementById('labor-cost').value = comp.mao_de_obra || '';
+      document.getElementById('packaging-cost').value = comp.embalagem || '';
+      markup = comp.markup;
+    } else {
+      // receita salva antes de guardar a composição: só os totais estão no banco
+      document.getElementById('insumos-vazio').textContent = 'Receita salva antes desta versão: adicione os insumos de novo.';
+      const custo = parseFloat(p.custo_total) || 0, preco = parseFloat(p.preco_venda_sugerido) || 0;
+      if (custo > 0 && preco > 0) markup = (preco / custo - 1) * 100;
+    }
+    const slider = document.getElementById('markup-slider');
+    if (markup) slider.value = Math.min(Math.max(Math.round(markup), +slider.min), +slider.max);
+    slider.dispatchEvent(new Event('input'));
+    document.getElementById('batch-yield').dispatchEvent(new Event('input'));
   });
 </script>
 <script src="./nav.js"></script>
