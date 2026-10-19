@@ -6,7 +6,7 @@
   </style>
   </head><body class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="King Decantes Logo" class="w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1XFrwGGvl4pQI7I-3cc6vz0-bFTeqohPznYECMVKif-aZm1kBC6dnTKtg9cSDQHrthCX1IOPSBSOYLYin0CNCtNg20eZQmqj7cI6UYpMRVGRtB_7sOahiZigs4LbSdJJ4KN9hP86ryWkJ0zstDCl3CRT3X8hRa03seu4S7JbAiEZqnEZZW-cWLQb5D3ipA6cMSEGUDXkcyOiwJgV01rYmN3kUPMi3dX0tG_bbqOnNqb3G2prqXNbVHVZls" style="height: 38px;"><div class="flex flex-col min-w-0"><h1 class="font-headline-sm text-on-surface font-semibold truncate leading-none text-[16px]">Receitas</h1></div></div><div class="flex items-center gap-space-xs shrink-0"><a href="./index.html" aria-label="Perfil" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pt-space-sm gap-space-md">
 <div class="relative -mx-margin px-margin overflow-x-auto no-scrollbar">
-<div class="flex items-center gap-space-xs min-w-max pb-space-xs">
+<div class="flex items-center gap-space-xs min-w-max pb-space-xs" id="filtros-categoria">
 <button class="category-pill active px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-primary text-on-primary shadow-sm" data-category="" type="button">Todos</button>
 <button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="decante" type="button">Decantes</button>
 <button class="category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high" data-category="vela" type="button">Velas</button>
@@ -55,21 +55,41 @@
       </div>`).join('');
   }
 
-  document.querySelectorAll('.category-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      document.querySelectorAll('.category-pill').forEach(p => {
-        p.classList.remove('bg-primary', 'text-on-primary', 'active');
-        p.classList.add('bg-surface-container', 'text-on-surface-variant');
-      });
-      pill.classList.remove('bg-surface-container', 'text-on-surface-variant');
-      pill.classList.add('bg-primary', 'text-on-primary', 'active');
-      filtroReceita = pill.dataset.category;
-      renderizarReceitas();
+  document.getElementById('filtros-categoria').addEventListener('click', ev => {
+    const pill = ev.target.closest('.category-pill');
+    if (!pill) return;
+    document.querySelectorAll('.category-pill').forEach(p => {
+      p.classList.remove('bg-primary', 'text-on-primary', 'active');
+      p.classList.add('bg-surface-container', 'text-on-surface-variant');
     });
+    pill.classList.remove('bg-surface-container', 'text-on-surface-variant');
+    pill.classList.add('bg-primary', 'text-on-primary', 'active');
+    filtroReceita = pill.dataset.category;
+    renderizarReceitas();
   });
+
+  // Categorias criadas pelo usuário ganham um filtro próprio
+  function adicionarFiltrosNovos() {
+    const container = document.getElementById('filtros-categoria');
+    const chaves = [...container.querySelectorAll('.category-pill')].map(p => p.dataset.category).filter(Boolean);
+    const vistas = new Set();
+    todasReceitas.forEach(p => {
+      const nome = (p.categoria || '').trim();
+      const chave = nome.toLowerCase();
+      if (!nome || vistas.has(chave) || chaves.some(k => chave.includes(k))) return;
+      vistas.add(chave);
+      const pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'category-pill px-4 py-2 rounded-full font-label-md text-label-md uppercase tracking-wider transition-all bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high';
+      pill.dataset.category = chave;
+      pill.textContent = nome;
+      container.appendChild(pill);
+    });
+  }
 
   window.addEventListener('DOMContentLoaded', async () => {
     todasReceitas = await listarProdutos();
+    adicionarFiltrosNovos();
     renderizarReceitas();
   });
 </script>

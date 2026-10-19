@@ -32,7 +32,7 @@
 <!-- Categories Pills -->
 <div class="flex flex-col gap-1.5 mt-2">
 <span class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Categoria</span>
-<div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+<div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="categorias-chips">
 <button class="category-chip shrink-0 px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md uppercase transition-all shadow-sm" type="button">
             Decante de Perfume
           </button>
@@ -51,6 +51,7 @@
 <button class="category-chip shrink-0 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-md text-label-md uppercase transition-all" type="button">
             Home Spray
           </button>
+<button type="button" id="btn-nova-categoria" onclick="novaCategoria()" class="shrink-0 px-3 py-1.5 rounded-full border border-dashed border-primary text-primary font-label-md text-label-md uppercase transition-all">+ Nova</button>
 </div>
 </div>
 <!-- Rendimento / Lote -->
@@ -216,7 +217,6 @@
     const profitBarFill = document.getElementById('profit-bar-fill');
     const compositionRatio = document.getElementById('composition-ratio');
     const presetButtons = document.querySelectorAll('.preset-btn');
-    const categoryChips = document.querySelectorAll('.category-chip');
 
     function calculateTotalCost() {
       let sum = 0;
@@ -295,16 +295,10 @@
       });
     });
 
-    // Category Selector
-    categoryChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        categoryChips.forEach(c => {
-          c.classList.remove('bg-primary', 'text-on-primary');
-          c.classList.add('bg-surface-container-high', 'text-on-surface-variant');
-        });
-        chip.classList.add('bg-primary', 'text-on-primary');
-        chip.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
-      });
+    // Category Selector (delegado: vale também para categorias criadas pelo usuário)
+    document.getElementById('categorias-chips').addEventListener('click', ev => {
+      const chip = ev.target.closest('.category-chip');
+      if (chip) selecionarCategoria(chip);
     });
 
     // Initial run
@@ -426,6 +420,61 @@
     select.innerHTML = insumosEstoque.length
       ? '<option value="">Escolha um insumo</option>' + insumosEstoque.map(i => `<option value="${escaparHtml(i.id)}">${escaparHtml(i.nome)}</option>`).join('')
       : '<option value="">Estoque vazio</option>';
+  });
+</script>
+<script>
+  // Categorias: as fixas da tela + as criadas pelo usuário (guardadas neste aparelho)
+  // + as que já existem em receitas salvas (assim aparecem para todos os usuários).
+  const CHAVE_CATEGORIAS = 'king_categorias_extras';
+  const CHIP_ATIVO = ['bg-primary', 'text-on-primary'];
+  const CHIP_INATIVO = ['bg-surface-container-high', 'text-on-surface-variant'];
+
+  function lerCategoriasExtras() {
+    try { return JSON.parse(localStorage.getItem(CHAVE_CATEGORIAS) || '[]'); } catch (e) { return []; }
+  }
+
+  function selecionarCategoria(chip) {
+    document.querySelectorAll('#categorias-chips .category-chip').forEach(c => {
+      c.classList.remove(...CHIP_ATIVO);
+      c.classList.add(...CHIP_INATIVO);
+    });
+    chip.classList.remove(...CHIP_INATIVO);
+    chip.classList.add(...CHIP_ATIVO);
+    chip.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  function encontrarCategoria(nome) {
+    const alvo = nome.trim().toLowerCase();
+    return [...document.querySelectorAll('#categorias-chips .category-chip')].find(c => c.textContent.trim().toLowerCase() === alvo);
+  }
+
+  function criarChipCategoria(nome) {
+    const existente = encontrarCategoria(nome);
+    if (existente) return existente;
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'category-chip shrink-0 px-3 py-1.5 rounded-full hover:text-on-surface font-label-md text-label-md uppercase transition-all ' + CHIP_INATIVO.join(' ');
+    chip.textContent = nome.trim();
+    document.getElementById('categorias-chips').insertBefore(chip, document.getElementById('btn-nova-categoria'));
+    return chip;
+  }
+
+  function novaCategoria() {
+    const nome = (prompt('Nome da nova categoria:') || '').trim();
+    if (!nome) return;
+    const chip = criarChipCategoria(nome);
+    const extras = lerCategoriasExtras();
+    if (!extras.some(c => c.toLowerCase() === nome.toLowerCase())) {
+      extras.push(nome);
+      try { localStorage.setItem(CHAVE_CATEGORIAS, JSON.stringify(extras)); } catch (e) {}
+    }
+    selecionarCategoria(chip);
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    lerCategoriasExtras().forEach(criarChipCategoria);
+    const produtos = typeof listarProdutos === 'function' ? await listarProdutos() : [];
+    produtos.map(p => (p.categoria || '').trim()).filter(Boolean).forEach(criarChipCategoria);
   });
 </script>
 <script src="./nav.js"></script>
