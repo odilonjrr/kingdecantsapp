@@ -330,15 +330,13 @@
 
       container.innerHTML = filtrados.map(item => `
         <div class="bg-brand-card border border-brand-cardBorder rounded-xl p-3.5 flex items-center justify-between gap-2 hover:border-brand-gold/40 transition">
-          <div class="space-y-1 min-w-0">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-semibold text-white truncate">${escaparHtml(item.nome)}</span>
+          <div class="space-y-1 min-w-0 flex-1">
+            <!-- nome sozinho na linha e com quebra: aparece inteiro mesmo no celular -->
+            <div class="text-xs font-semibold text-white leading-snug break-words">${escaparHtml(item.nome)}</div>
+            <div class="text-[11px] text-zinc-400 flex flex-wrap items-center gap-x-2 gap-y-1">
               <span class="text-[10px] bg-brand-gold/10 text-brand-gold border border-brand-gold/20 px-1.5 py-0.2 rounded font-medium">${NOMES_CATEGORIA[item.categoria] || item.categoria || 'Outro'}</span>
-            </div>
-            <div class="text-[11px] text-zinc-400 flex items-center gap-2">
               <span>Estoque: <strong class="text-zinc-200">${item.quantidade_estoque} ${item.unidade_medida || 'un'}</strong></span>
-              <span>&bull;</span>
-              <span>${item.criado_por || 'Odilon'}</span>
+              <span class="text-zinc-500">${escaparHtml(item.criado_por || 'Odilon')}</span>
             </div>
           </div>
           <div class="flex items-center gap-2 shrink-0">
