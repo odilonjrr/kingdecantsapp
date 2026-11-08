@@ -79,7 +79,7 @@
     </div>
 
     <!-- Filtros por Categoria -->
-    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+    <div id="filtros-estoque" class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
       <button onclick="setFiltro('todos')" data-cat="todos" class="filtro-btn px-3 py-1.5 rounded-lg bg-brand-gold text-black font-medium transition">Todos</button>
       <button onclick="setFiltro('perfume')" data-cat="perfume" class="filtro-btn px-3 py-1.5 rounded-lg bg-brand-card border border-brand-cardBorder text-zinc-300 font-medium transition hover:border-zinc-500">Perfumes</button>
       <button onclick="setFiltro('embalagem')" data-cat="embalagem" class="filtro-btn px-3 py-1.5 rounded-lg bg-brand-card border border-brand-cardBorder text-zinc-300 font-medium transition hover:border-zinc-500">Embalagens</button>
@@ -135,6 +135,7 @@
               <option value="artesanato">Artesanato (essência, cera)</option>
               <option value="acessorio">Acessório (válvula, etiqueta)</option>
               <option value="outro">Outro</option>
+              <option value="__nova__">+ Nova categoria…</option>
             </select>
           </div>
           <div>
@@ -198,6 +199,70 @@
     let filtroAtual = 'todos';
     // Categorias aceitas pela tabela insumos (regra insumos_categoria_check)
     const NOMES_CATEGORIA = { perfume: 'Perfume', embalagem: 'Embalagem', artesanato: 'Artesanato', acessorio: 'Acessório', outro: 'Outro' };
+    const CHAVE_CATEGORIAS_ESTOQUE = 'king_categorias_estoque';
+    const FILTRO_INATIVO = 'px-3 py-1.5 rounded-lg bg-brand-card border border-brand-cardBorder text-zinc-300 font-medium transition hover:border-zinc-500';
+
+    function lerCategoriasExtras() {
+      try { return JSON.parse(localStorage.getItem(CHAVE_CATEGORIAS_ESTOQUE) || '[]'); } catch (e) { return []; }
+    }
+
+    // [valor, nome] de todas as categorias conhecidas (usado também pela importação)
+    function listarCategoriasEstoque() {
+      const lista = Object.entries(NOMES_CATEGORIA);
+      const vistos = new Set(lista.flatMap(([v, n]) => [v, n.toLowerCase()]));
+      [...lerCategoriasExtras(), ...todosInsumos.map(i => i.categoria)].forEach(c => {
+        const nome = (c || '').trim();
+        if (nome && !vistos.has(nome.toLowerCase())) { vistos.add(nome.toLowerCase()); lista.push([nome, nome]); }
+      });
+      return lista;
+    }
+
+    // Garante a opção no formulário (antes de "+ Nova categoria…")
+    function garantirOpcaoCategoria(valor) {
+      const select = document.getElementById('insumo-categoria');
+      if ([...select.options].some(o => o.value === valor)) return;
+      const opt = document.createElement('option');
+      opt.value = valor;
+      opt.textContent = NOMES_CATEGORIA[valor] || valor;
+      select.insertBefore(opt, select.querySelector('option[value="__nova__"]'));
+    }
+
+    // Filtros: um botão para cada categoria que ainda não tem
+    function atualizarCategoriasNaTela() {
+      const filtros = document.getElementById('filtros-estoque');
+      const usadas = new Set(todosInsumos.map(i => i.categoria));
+      listarCategoriasEstoque().forEach(([valor, nome]) => {
+        garantirOpcaoCategoria(valor);
+        if (filtros.querySelector(`[data-cat="${CSS.escape(valor)}"]`)) return;
+        if (!usadas.has(valor) && !lerCategoriasExtras().includes(valor)) return;
+        const b = document.createElement('button');
+        b.dataset.cat = valor;
+        b.className = 'filtro-btn ' + FILTRO_INATIVO;
+        b.textContent = nome;
+        b.addEventListener('click', () => setFiltro(valor));
+        filtros.appendChild(b);
+      });
+    }
+
+    let categoriaAnterior = 'perfume';
+    function aoTrocarCategoria(ev) {
+      const select = ev.target;
+      if (select.value !== '__nova__') { categoriaAnterior = select.value; return; }
+      const nome = (prompt('Nome da nova categoria:') || '').trim();
+      if (!nome) { select.value = categoriaAnterior; return; }
+      // nome igual a uma categoria que já existe: só seleciona
+      const existente = listarCategoriasEstoque().find(([v, n]) => v.toLowerCase() === nome.toLowerCase() || n.toLowerCase() === nome.toLowerCase());
+      const valor = existente ? existente[0] : nome;
+      if (!existente) {
+        const extras = lerCategoriasExtras();
+        extras.push(valor);
+        try { localStorage.setItem(CHAVE_CATEGORIAS_ESTOQUE, JSON.stringify(extras)); } catch (e) {}
+      }
+      garantirOpcaoCategoria(valor);
+      select.value = valor;
+      categoriaAnterior = valor;
+      atualizarCategoriasNaTela();
+    }
 
     // Recupera usuário ativo
     const operador = localStorage.getItem('king_usuario_ativo') || 'Odilon';
@@ -205,6 +270,7 @@
 
     // Inicialização ao carregar a página
     window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('insumo-categoria').addEventListener('change', aoTrocarCategoria);
       carregarListaInsumos();
     });
 
@@ -217,6 +283,7 @@
       if (item) {
         const qtd = parseFloat(item.quantidade_estoque) || 0;
         document.getElementById('insumo-nome').value = item.nome || '';
+        if (item.categoria) garantirOpcaoCategoria(item.categoria);
         document.getElementById('insumo-categoria').value = item.categoria || 'outro';
         document.getElementById('insumo-unidade').value = item.unidade_medida || 'un';
         document.getElementById('insumo-quantidade').value = qtd;
@@ -289,7 +356,11 @@
         await carregarListaInsumos();
       } catch (err) {
         console.error(err);
-        alert('Erro ao salvar: ' + err.message);
+        if (String(err.message).includes('insumos_categoria_check')) {
+          alert('O banco ainda só aceita as categorias padrão (Perfume, Embalagem, Artesanato, Acessório e Outro).\n\nPara liberar categorias novas, rode no SQL Editor do Supabase:\nalter table insumos drop constraint if exists insumos_categoria_check;');
+        } else {
+          alert('Erro ao salvar: ' + err.message);
+        }
       } finally {
         btn.innerText = 'Salvar';
         btn.disabled = false;
@@ -308,6 +379,7 @@
         }
 
         todosInsumos = itens;
+        atualizarCategoriasNaTela();
         renderizarInsumos();
       } catch (err) {
         console.error('Erro ao listar:', err);
