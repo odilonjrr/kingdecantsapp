@@ -12,26 +12,58 @@ function definirUsuarioAtivo(nome) {
 }
 
 // 2. Funções de Insumos & Matérias-Primas (Perfumes frasco-mãe, vidros, caixas)
+// Colunas de insumos que bancos mais antigos podem não ter (marca, observacoes).
+const COLUNAS_OPCIONAIS_INSUMO = ['marca', 'observacoes'];
+
+function linhaInsumo(dados) {
+  const linha = {
+    nome: dados.nome,
+    categoria: dados.categoria,
+    quantidade_estoque: parseFloat(dados.quantidade_estoque || 0),
+    unidade_medida: dados.unidade_medida || 'un',
+    custo_unitario: parseFloat(dados.custo_unitario || 0),
+    fornecedor: dados.fornecedor || ''
+  };
+  COLUNAS_OPCIONAIS_INSUMO.forEach(c => { if (c in dados) linha[c] = dados[c] || ''; });
+  return linha;
+}
+
+// Grava e, se o Supabase responder que falta uma coluna opcional (PGRST204),
+// tira essa coluna e tenta de novo. A marca vai para "fornecedor" se ele estiver vazio.
+async function gravarComColunasOpcionais(gravar, linhas, opcionais) {
+  let r = await gravar(linhas);
+  for (let i = 0; r.error && r.error.code === 'PGRST204' && i < opcionais.length; i++) {
+    const faltando = (String(r.error.message).match(/'(\w+)' column/) || [])[1];
+    if (!opcionais.includes(faltando)) break;
+    console.warn(`Tabela sem a coluna ${faltando}; salvando sem ela.`);
+    linhas.forEach(l => {
+      if (faltando === 'marca' && l.marca && !l.fornecedor) l.fornecedor = l.marca;
+      delete l[faltando];
+    });
+    r = await gravar(linhas);
+  }
+  return r;
+}
+
+// Cadastra vários insumos de uma vez (em lotes de 50).
+async function cadastrarInsumos(lista, aoProgredir) {
+  const usuario = obterUsuarioAtivo();
+  const linhas = lista.map(d => ({ ...linhaInsumo(d), criado_por: usuario }));
+  const gravados = [];
+  for (let i = 0; i < linhas.length; i += 50) {
+    const lote = linhas.slice(i, i + 50);
+    const { data, error } = await gravarComColunasOpcionais(
+      l => supabase.from('insumos').insert(l).select(), lote, COLUNAS_OPCIONAIS_INSUMO);
+    if (error) throw error;
+    gravados.push(...(data || []));
+    if (aoProgredir) aoProgredir(Math.min(i + 50, linhas.length), linhas.length);
+  }
+  return gravados;
+}
+
 async function cadastrarInsumo(dados) {
   try {
-    const usuario = obterUsuarioAtivo();
-    const { data, error } = await supabase
-      .from('insumos')
-      .insert([
-        {
-          nome: dados.nome,
-          categoria: dados.categoria,
-          quantidade_estoque: parseFloat(dados.quantidade_estoque || 0),
-          unidade_medida: dados.unidade_medida || 'un',
-          custo_unitario: parseFloat(dados.custo_unitario || 0),
-          fornecedor: dados.fornecedor || '',
-          criado_por: usuario
-        }
-      ])
-      .select();
-
-    if (error) throw error;
-    return data;
+    return await cadastrarInsumos([dados]);
   } catch (err) {
     console.error('Erro ao cadastrar insumo:', err);
     throw err;
@@ -56,18 +88,8 @@ async function listarInsumos() {
 // Editar e excluir: o .select() devolve as linhas afetadas; se vier vazio,
 // o banco não deixou (regra de permissão/RLS) e avisamos em vez de fingir sucesso.
 async function atualizarInsumo(id, dados) {
-  const { data, error } = await supabase
-    .from('insumos')
-    .update({
-      nome: dados.nome,
-      categoria: dados.categoria,
-      quantidade_estoque: parseFloat(dados.quantidade_estoque || 0),
-      unidade_medida: dados.unidade_medida || 'un',
-      custo_unitario: parseFloat(dados.custo_unitario || 0),
-      fornecedor: dados.fornecedor || ''
-    })
-    .eq('id', id)
-    .select();
+  const { data, error } = await gravarComColunasOpcionais(
+    l => supabase.from('insumos').update(l[0]).eq('id', id).select(), [linhaInsumo(dados)], COLUNAS_OPCIONAIS_INSUMO);
   if (error) throw error;
   if (!data || data.length === 0) throw new Error('o banco não permitiu editar este item (verifique as permissões da tabela insumos).');
   return data;
