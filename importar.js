@@ -193,7 +193,8 @@
     lista.innerHTML = itensPrevia.map((item, i) => {
       const titulo = item.aba !== abaAtual ? `<div class="col-span-full text-[11px] uppercase tracking-wider text-brand-gold font-semibold pt-3">${escaparHtml(item.aba)}</div>` : '';
       abaAtual = item.aba;
-      const opcoes = Object.entries(CATEGORIAS).map(([v, n]) => `<option value="${v}"${v === item.categoria ? ' selected' : ''}>${n}</option>`).join('');
+      const lista = typeof listarCategoriasEstoque === 'function' ? listarCategoriasEstoque() : Object.entries(CATEGORIAS);
+      const opcoes = lista.map(([v, n]) => `<option value="${escaparHtml(v)}"${v === item.categoria ? ' selected' : ''}>${escaparHtml(n)}</option>`).join('');
       return `${titulo}
         <div class="bg-[#181816] border border-brand-cardBorder rounded-xl p-3 flex items-start gap-3 ${item.incluir ? '' : 'opacity-50'}">
           <input type="checkbox" data-i="${i}" class="importar-incluir mt-0.5 w-4 h-4 accent-[#d8ac43] shrink-0" ${item.incluir ? 'checked' : ''} aria-label="Incluir ${escaparHtml(item.nome)}">
